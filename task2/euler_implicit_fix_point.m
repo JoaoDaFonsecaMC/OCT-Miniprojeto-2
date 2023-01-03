@@ -1,6 +1,4 @@
-function [u_f,v_f,r_f]=euler_implicit_fix_point(phi,u_dot,v_dot,r_dot,f_m,u_0,v_0,r_0,t_max,consts)
-
-delta_t = 0.01;
+function [u_h,v_h,r_h,theta_h]=euler_implicit_fix_point(phi,u_dot,v_dot,r_dot,theta_dot,f_m,u_0,v_0,r_0,theta_0,t_max,delta_t,N,consts)
 
 m0 = consts(1);
 m_dot = consts(2);
@@ -34,11 +32,12 @@ t_h=t0:delta_t:t_max;
 
 % inizializzo il vettore che conterra' la soluzione discreta
 
-N_istanti=length(t_h);
+N_istanti=N+1;
 
 u_h=zeros(1,N_istanti);
 v_h=zeros(1,N_istanti);
 r_h=zeros(1,N_istanti);
+theta_h=zeros(1,N_istanti);
 
 % ciclo iterativo che calcola u_(n+1)=u_n+h*f_(n+1) . Ad ogni iterazione temporale devo eseguire delle sottoiterazioni
 % di punto fisso per il calcolo di u_(n+1): u_(n+1)^(k+1) = u_n + h * f_( t_(n+1) , u_(n+1)^k ). Per garantire la
@@ -48,6 +47,7 @@ r_h=zeros(1,N_istanti);
 u_h(1)=u_0;
 v_h(1)=v_0;
 r_h(1)=r_0;
+theta_h(1)=theta_0;
 
 % parametri per le iterazioni di punto fisso
 N_max=100;
@@ -62,30 +62,31 @@ for it=2:N_istanti
     u_old=u_h(it-1);
     v_old=v_h(it-1);
     r_old=r_h(it-1);
+    theta_old=theta_h(it-1);
     
     t_pf=t_h(it);
     
     m = f_m(t_pf,m0,m_dot);
         
-    psi_u=@(u,phi,v,r,miu,T,m) u_old + delta_t * u_dot( phi,v,r,miu,T,m );
-    psi_v=@(v,phi,u,r,T,m) v_old + delta_t * v_dot( phi,v,u,r,T,m );
+    psi_u=@(u,phi,v,r,miu,T,m) u_old + delta_t * u_dot( phi(it,1),v,r,miu,T,m );
+    psi_v=@(v,phi,u,r,T,m) v_old + delta_t * v_dot( phi(it,1),v,u,r,T,m );
     psi_r=@(r,u) r_old + delta_t * r_dot( u );
+    psi_theta=@(r,v,theta) theta_old + delta_t * theta_dot( v, r );
     
     % sottoiterazioni
     
     [u_pf, it_pf] = ptofis_u(u_old, psi_u, N_max, toll,phi,v_old,r_old,miu,T,m);
     [v_pf, it_pf] = ptofis_v(v_old, psi_v, N_max, toll,phi,u_old,r_old,T,m);
     [r_pf, it_pf] = ptofis_r(r_old, psi_r, N_max, toll,u_old);
+    [theta_pf, it_pf] = ptofis_theta(theta_old, psi_theta, N_max, toll, v_old, r_old);
     
-    u_h(it)=u_pf(end);
-    v_h(it)=v_pf(end);
-    r_h(it)=r_pf(end);
+    u_h(it) = u_pf(end);
+    v_h(it) = v_pf(end);
+    r_h(it) = r_pf(end);
+    theta_h(it) = theta_pf(end);
     
     % tengo traccia dei valori di it_pf per valutare la convergenza delle iterazioni di punto fisso
     vett_it_pf(it)=it_pf;
     
 end
-u_f = u_h(end);
-v_f = v_h(end);
-r_f = r_h(end);
 end
