@@ -58,25 +58,28 @@ vett_it_pf=zeros(1,N_istanti);
 for it=2:N_istanti
     
     % preparo le variabili per le sottoiterazioni
+    disp(it);
     
     u_old=u_h(it-1);
     v_old=v_h(it-1);
     r_old=r_h(it-1);
     theta_old=theta_h(it-1);
     
+    phi_old = phi(it-1);
+    
     t_pf=t_h(it);
     
     m = f_m(t_pf,m0,m_dot);
         
-    psi_u=@(u,phi,v,r,miu,T,m) u_old + delta_t * u_dot( phi(it,1),v,r,miu,T,m );
-    psi_v=@(v,phi,u,r,T,m) v_old + delta_t * v_dot( phi(it,1),v,u,r,T,m );
+    psi_u=@(u,phi_it,v,r,miu,T,m) u_old + delta_t * u_dot( phi_it,v,r,miu,T,m );
+    psi_v=@(v,phi_it,u,r,T,m) v_old + delta_t * v_dot( phi_it,v,u,r,T,m );
     psi_r=@(r,u) r_old + delta_t * r_dot( u );
     psi_theta=@(r,v,theta) theta_old + delta_t * theta_dot( v, r );
     
     % sottoiterazioni
     
-    [u_pf, it_pf] = ptofis_u(u_old, psi_u, N_max, toll,phi,v_old,r_old,miu,T,m);
-    [v_pf, it_pf] = ptofis_v(v_old, psi_v, N_max, toll,phi,u_old,r_old,T,m);
+    [u_pf, it_pf] = ptofis_u(u_old, psi_u, N_max, toll,phi_old,v_old,r_old,miu,T,m);
+    [v_pf, it_pf] = ptofis_v(v_old, psi_v, N_max, toll,phi_old,u_old,r_old,T,m);
     [r_pf, it_pf] = ptofis_r(r_old, psi_r, N_max, toll,u_old);
     [theta_pf, it_pf] = ptofis_theta(theta_old, psi_theta, N_max, toll, v_old, r_old);
     
