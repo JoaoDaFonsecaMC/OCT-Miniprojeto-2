@@ -34,6 +34,7 @@ t_h=t0:delta_t:t_max;
 
 N_istanti=N+1;
 
+
 u_h=zeros(1,N_istanti);
 v_h=zeros(1,N_istanti);
 r_h=zeros(1,N_istanti);
@@ -58,7 +59,7 @@ vett_it_pf=zeros(1,N_istanti);
 for it=2:N_istanti
     
     % preparo le variabili per le sottoiterazioni
-    disp(it);
+    
     
     u_old=u_h(it-1);
     v_old=v_h(it-1);
