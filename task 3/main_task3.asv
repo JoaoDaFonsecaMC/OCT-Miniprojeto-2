@@ -1,0 +1,77 @@
+format long
+A= [0 0 0 1 0 0;
+    0 0 0 0 1 0;
+    0 0 0 0 0 1;
+    0 0 0 0 0 0;
+    0 0 0 0 0 0;
+    0 0 0 0 0 0];
+B= [0 0 0;
+    0 0 0;
+    0 0 0;
+    1 0 0;
+    0 1 0;
+    0 0 1];
+C= [1 0 0 0 0 0;
+    0 1 0 0 0 0;
+    0 0 1 0 0 0];
+MewQ=1; % between 1 and 100 including 1 e 100
+MewR=0.1; % between 0 and 1 excluding 0 e 1
+Q=MewQ*eye(6);
+R=MewR*eye(3);
+[K,P,E]=lqr(A,B,Q,R); % you need Control System Toolbox to run it 
+Way7= [39 59 15.04 ; 7 29 45];
+Way8= [40 01 17.12 ; 7 29 47];
+Way9= [40 03 45.92 ; 7 29 49];
+Way10=[40 05 31.38 ; 7 29 51];
+H7=800;
+H8=800;
+H9=800;
+H10=800;
+t7=0.210*3600;
+t8=0.245*3600;
+t9=0.280*3600;
+t10=0.325*3600;
+Way7_deg=dms2degrees(Way7); % you need Mapping Toolbox to run it 
+Way8_deg=dms2degrees(Way8);
+Way9_deg=dms2degrees(Way9);
+Way10_deg=dms2degrees(Way10);
+Way7_deg(2)=-Way7_deg(2);
+Way8_deg(2)=-Way8_deg(2);
+Way9_deg(2)=-Way9_deg(2);
+Way10_deg(2)=-Way10_deg(2);
+
+[X7,Y7,Z7]= geodetic_to_geocentric (Way7_deg(2),Way7_deg(1),H7);
+[X8,Y8,Z8]= geodetic_to_geocentric (Way8_deg(2),Way8_deg(1),H8);
+[X9,Y9,Z9]= geodetic_to_geocentric (Way9_deg(2),Way9_deg(1),H9);
+[X10,Y10,Z10]= geodetic_to_geocentric (Way10_deg(2),Way10_deg(1),H10);
+
+t=t7;
+step=0.01;
+y_reftotal=[];
+Matrix1=[A B; C zeros(3)];
+Matrix2=[zeros(6,3); eye(3)];
+Asterix_matrix=[];
+j=1;
+
+while(t<t8)
+ Y_refnew7= [X7+(X8-X7)/(t8-t7)*(t-t7);
+             Y7+(Y8-Y7)/(t8-t7)*(t-t7);
+             Z7+(Z8-Z7)/(t8-t7)*(t-t7)];
+ y_reftotal=cat(2,y_reftotal,Y_refnew7); % cat concanates arrays
+ New_asterix=inv(Matrix1)*Matrix2*y_reftotal(:,j);
+ Asterix_matrix=cat(2,Asterix_matrix,New_asterix);
+ t=t+step;
+ j=j+1;
+end
+
+while(t<t9)
+ Y_refnovo8=[Ponto8(1)+(Ponto9(1)-Ponto8(1))/(t9-t8)*(t-t8) 
+;Ponto8(2)+(Ponto9(2)-Ponto8(2))/(t9-t8)*(t-t8) ;Ponto8(3)+(Ponto9(3)-
+Ponto8(3))/(t9-t8)*(t-t8)];
+ y_reftotal=cat(2,y_reftotal,Y_refnovo8);
+ Asterisconovo=inv(Matriz1)*Matriz2*y_reftotal(:,j);
+ MatrizAsterisco=cat(2,MatrizAsterisco,Asterisconovo);
+ t=t+passo;
+ j=j+1;
+end
+
