@@ -1,4 +1,6 @@
-function [X,Y,Z]= geodetic_to_geocentric (lambda,phi,h)
+function [X,Y,Z]= geodetic_to_geocentric (lambda,phi,H)
+% h needs to be imputted in km
+h=H/1000;
 a = 6378.137; %km
 b = 6356.752; %km
 lambdarad=deg2rad(lambda);
