@@ -139,3 +139,11 @@ while(t<=t10)
   xtotal=cat(2,xtotal,xk);
  uctotal=cat(2,uctotal,uc_k);
 end
+
+
+%Plots
+plot3(xtotal(1,:) , xtotal(2,:) , xtotal(3,:));
+xlabel('X[Km]')
+ylabel('Y[Km]')
+zlabel('Z[Km]')
+grid on
