@@ -1,4 +1,4 @@
-function [c, ceq ] = restrictions(X)
+function [c, ceq ] = restrictions(x)
 %parameters
 N = 100;
 t_0 = 0;
@@ -20,17 +20,20 @@ h = (t_f-t_0)/N;
 consts = [N h T miu m0 m_dot];
 
 %loading values
-Phi = X(1,:);
-U = X(2,:)
-V = X(3,:)
-R = X(4,:)
-Theta = X(5,:)
+Phi = x(:,1);
+U = x(:,2);
+V = x(:,3);
+R = x(:,4);
+Theta = x(:,5);
 
-[Euler_diff] = euler_implicit(Phi,U,V,R,Theta,consts)
+X1 = [U(1) V(1) R(1) Theta(1)];
+x0 = [u_0 v_0 r_0 theta_0];
+
+[Euler_diff] = euler_implicit(Phi,U,V,R,Theta,consts);
 
 % Nonlinear inequality constraints:
-c = [Phi(1,:) - 0.5; -Phi(1,:) - 0.5];
+c = [Phi - 0.5; -Phi - 0.5];
 % no nonlinear equality constraints:
-ceq = [X(2,1) - u_0; X(3,1) - v_0; X(4,1) - r_0; X(5,1) - theta_0; Euler_diff];
+ceq = [X1 - x0; Euler_diff];
 
 end
