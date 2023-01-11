@@ -1,0 +1,18 @@
+function [c, ceq ] = restrictions(X)
+%loading values
+Phi = X(1,:);
+U = X(2,:)
+V = X(3,:)
+R = X(4,:)
+Theta = X(5,:)
+
+[Euler_diff] = euler_implicit_u(Phi,U,V,R,Theta)
+
+% Nonlinear inequality constraints:
+c = [phi(1,:) - 0.5; -phi(1,:) - 0.5];
+% no nonlinear equality constraints:
+ceq = [U(1) - u_0; V(1) - v_0; R(1) - r_0; Theta(1) - theta_0; 
+    U(2:end) - Euler_diff(1,:); V(2:end) - Euler_diff(2,:);
+    R(2:end) - Euler_diff(3,:);Theta(2:end) - Euler_diff(1,:);];
+
+end
