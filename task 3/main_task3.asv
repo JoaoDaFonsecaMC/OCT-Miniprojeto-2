@@ -140,7 +140,7 @@ while(t<=t10)
  uctotal=cat(2,uctotal,uc_k);
 end
 
-time=t7:step:t10;
+
 %Plots
 figure ()
 plot3(xtotal(1,:) , xtotal(2,:) , xtotal(3,:));
@@ -156,26 +156,12 @@ plot3(X10 , Y10 , Z10, 'o');
 
 figure ()
 plot(time,xtotal(4,:))
-title('vx in time')
 
 figure ()
 plot(time,xtotal(5,:))
-title('vy in time')
 
 figure ()
 plot(time,xtotal(6,:))
-title('vz in time')
 
-figure ()
-plot(time,uctotal(1,:))
-title('ax in time')
-
-figure ()
-plot(time,uctotal(2,:))
-title('ay in time')
-
-figure ()
-plot(time,uctotal(3,:))
-title('az in time')
-
-
+figure()
+plot(ti)
