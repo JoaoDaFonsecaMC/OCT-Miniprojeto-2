@@ -22,19 +22,29 @@ options=optimoptions('fmincon','MaxFunctionEvaluations',10000000000000,'MaxItera
 figure()
 plot(time,X(:,1));
 title("Phi vs time");
+xlabel (time(s));
+ylabel (phi(rad));
 
 figure()
 plot(time,X(:,2));
 title("u vs time");
+xlabel (time(s));
+ylabel (u(km/s));
 
 figure()
 plot(time,X(:,3));
 title("v vs time");
+xlabel (time(s));
+ylabel (v(km/s));
 
 figure()
 plot(time,X(:,4));
 title("r vs time");
+xlabel (time(s));
+ylabel (r(km));
 
 figure()
 plot(time,X(:,5));
 title("theta vs time");
+xlabel (time(s));
+ylabel (theta(rad));
