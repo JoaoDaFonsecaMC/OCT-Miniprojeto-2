@@ -90,11 +90,12 @@ end
 while(t<t10)
     Y_refnew9=[X9+(X10-X9)/(t10-t9)*(t-t9);
              Y9+(Y10-Y9)/(t10-t9)*(t-t9);
-             Z10+(Z10-Z9)/(t10-t9)*(t-t9)];
+             Z9+(Z10-Z9)/(t10-t9)*(t-t9)];
  y_reftotal=cat(2,y_reftotal,Y_refnew9); % cat concanates arrays
  New_asterix=inv(Matrix1)*Matrix2*y_reftotal(:,j);
  Asterix_matrix=cat(2,Asterix_matrix,New_asterix);
  t=t+step;
+ j=j+1;
 end
 
 mu_w=0.2; % value between 0 and 1
