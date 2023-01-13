@@ -25,18 +25,19 @@ R=mu_r*eye(3);
 [K,P,E]=lqr(A,B,Q,R); % you need Control System Toolbox to run it 
 
 %Waypoints coordinates and times
-Way7= [39 59 15.04 ; 7 29 45];
-Way8= [40 01 17.12 ; 7 29 47];
-Way9= [40 03 45.92 ; 7 29 49];
-Way10=[40 05 31.38 ; 7 29 51];
-H7=800;
-H8=800;
-H9=800;
-H10=800;
-t7=0.210*3600; %times from hours to seconds
-t8=0.245*3600;
-t9=0.280*3600;
-t10=0.325*3600;
+
+Way7= [39 49 25.71 ; 7 29 35];
+Way8= [39 50 34.82 ; 7 29 37];
+Way9= [39 51 33.38 ; 7 29 39];
+Way10=[39 52 39.86 ; 7 29 41];
+H7=400;
+H8=500;
+H9=600;
+H10=600;
+t7=0*3600; %times from hours to seconds
+t8=0.035*3600;
+t9=0.070*3600;
+t10=0.080*3600;
 
 %Waypoints in degress
 Way7_deg=dms2degrees(Way7); % you need Mapping Toolbox to run it 
