@@ -101,7 +101,6 @@ end
 
 mu_w=0.2; % value between 0 and 1
 w=mu_w*eye(3);
-
 Ad=expm(A*step); % matrix exponential
 N=2;
 Bd=(eye(6)*step-A^(N-1)*step^N)/factorial(N)*B;
